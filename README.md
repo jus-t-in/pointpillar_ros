@@ -10,9 +10,7 @@ Based on the ros1 system, obtain point cloud data and use the trained target det
 
 ## 运行步骤
 ### 将代码git clone到本地
-```Bash
-git clone https://github.com/wyt1004/maritime_detection.git
-```
+
 ### 编译
 ```Bash
 # 进入搭建好的openpcdet环境
@@ -91,4 +89,5 @@ obstacle_v:
   - 0.0
 obstacle_q: [80.3747428317453, 79.45003767096311, 92.44488237826258, 88.58348274232006, -109.5875370439707]
 ```
+
 
