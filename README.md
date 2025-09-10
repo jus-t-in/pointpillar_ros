@@ -29,8 +29,7 @@ catkin_make
 ```
 ### 运行
 #### 下载目标检测模型文件
-[下载链接](通过网盘分享的文件：checkpoint_epoch_80.pth
-链接: https://pan.baidu.com/s/1kgK-TwORrSkuEthBb0_lNg?pwd=3avc 提取码: 3avc)<br>
+[下载链接]( https://pan.baidu.com/s/1kgK-TwORrSkuEthBb0_lNg?pwd=3avc )<br>
 
 修改track.py代码中配置文件和模型文件的路径，改为当前系统下的路径。<br>
 
@@ -90,6 +89,7 @@ obstacle_v:
   - 0.0
 obstacle_q: [80.3747428317453, 79.45003767096311, 92.44488237826258, 88.58348274232006, -109.5875370439707]
 ```
+
 
 
 
