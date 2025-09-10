@@ -1,0 +1,82 @@
+DATASET: 'CustomDataset'
+DATA_PATH: './data/custom'
+
+CLASS_NAMES: ['large_vessel', 'medium_vessel', 'small_vessel', 'sign', 'piers','lighthouse']
+# CLASS_NAMES: ['large_vessel', 'medium_vessel', 'small_vessel', 'sign', 'piers','lighthouse', 'reef', 'ball_rank']
+
+POINT_CLOUD_RANGE: [-200, -100, -20, 200, 300, 40]
+# POINT_CLOUD_RANGE: [-102.4, -102.4, -2, 102.4, 102.4, 4]
+
+MAP_CLASS_TO_KITTI: {
+    'large_vessel': 'large_vessel',
+    'medium_vessel': 'medium_vessel',
+    'small_vessel': 'small_vessel',
+    'sign': 'sign',
+    'piers': 'piers',
+    'lighthouse': 'lighthouse',
+    # 'reef': 'reef',
+    # 'ball_rank': 'ball_rank'
+}
+
+DATA_SPLIT: {
+    'train': train,
+    'test': val
+}
+
+INFO_PATH: {
+    'train': [custom_infos_train.pkl],
+    'test': [custom_infos_val.pkl],
+}
+
+POINT_FEATURE_ENCODING: {
+    encoding_type: absolute_coordinates_encoding,
+    used_feature_list: ['x', 'y', 'z', 'intensity'],
+    src_feature_list: ['x', 'y', 'z', 'intensity'],
+}
+
+BALANCED_RESAMPLING: True
+
+DATA_AUGMENTOR:
+    DISABLE_AUG_LIST: ['placeholder']
+    AUG_CONFIG_LIST:
+        - NAME: gt_sampling
+          USE_ROAD_PLANE: False
+          DB_INFO_PATH:
+              - custom_dbinfos_train.pkl
+          PREPARE: {
+             filter_by_min_points: ['large_vessel:15', 'medium_vessel:15', 'small_vessel:10'],
+          }
+
+          SAMPLE_GROUPS: ['large_vessel:15', 'medium_vessel:7', 'small_vessel:8'] #需要修改，类平衡
+          NUM_POINT_FEATURES: 4
+          DATABASE_WITH_FAKELIDAR: False
+          REMOVE_EXTRA_WIDTH: [0.0, 0.0, 0.0]
+          LIMIT_WHOLE_SCENE: True
+
+        - NAME: random_world_flip
+          ALONG_AXIS_LIST: ['y']
+          # ALONG_AXIS_LIST: ['x', 'y']
+
+        - NAME: random_world_rotation
+          WORLD_ROT_ANGLE: [-0.78539816, 0.78539816]
+
+        - NAME: random_world_scaling
+          WORLD_SCALE_RANGE: [0.95, 1.05]
+
+DATA_PROCESSOR:
+    - NAME: mask_points_and_boxes_outside_range
+      REMOVE_OUTSIDE_BOXES: True
+
+    - NAME: shuffle_points
+      SHUFFLE_ENABLED: {
+        'train': True,
+        'test': False
+      }
+
+    - NAME: transform_points_to_voxels
+      VOXEL_SIZE: [0.25, 0.25, 60]
+      MAX_POINTS_PER_VOXEL: 32
+      MAX_NUMBER_OF_VOXELS: {
+        'train': 250000,
+        'test':  250000
+      }
